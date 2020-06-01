@@ -5,28 +5,36 @@ import Chart1 from './../shared/Chart1';
 import Chart2 from './../shared/Chart2';
 import AddPurchase from './../shared/AddPurchase';
 import DisplayPurchases from './../shared/DisplayPurchases';
+import { requestUserData } from './../../ducks/userReducer'
+import { requestBudgetData } from './../../ducks/budgetReducer'
 import Loading from './../shared/Loading/Loading';
 import Nav from './../shared/Nav';
 import './Budget.css';
 
 
 class Budget extends Component {
+  componentDidMount () {
+    this.props.requestUserData ();
+    this.props.requestBudgetData ();
+  }
 
   render() {
-    const { loading } = this.props.budget;
+    const { loading, purchases, budgetLimit } = this.props.budget;
+    const {firstName, lastName } = this.props.user;
+
     return (
       <Background>
         {loading ? <Loading /> : null}
         <div className='budget-container'>
-          <Nav />
+          <Nav firstName={ firstName } lastName={ lastName } />
           <div className='content-container'>
             <div className="purchases-container">
               <AddPurchase />
-              <DisplayPurchases />
+              <DisplayPurchases purchases = { purchases } />              
             </div>
             <div className='chart-container'>
-              <Chart1 />
-              <Chart2 />
+              <Chart1 purchases={ purchases } budgetLimit={ budgetLimit } />
+              <Chart2 purchases={ purchases } />              
             </div>
           </div>
         </div>
@@ -37,9 +45,10 @@ class Budget extends Component {
 
 function mapStateToProps (state) {
   return {
-    budget: state.budget
+    budget: state.budget,
+    user: state.user
   } 
 }
 
 
-export default connect(mapStateToProps)(Budget);
+export default connect(mapStateToProps, { requestUserData, requestBudgetData})(Budget);
