@@ -7,6 +7,8 @@ import AddPurchase from './../shared/AddPurchase';
 import DisplayPurchases from './../shared/DisplayPurchases';
 import { requestUserData } from './../../ducks/userReducer'
 import { requestBudgetData } from './../../ducks/budgetReducer'
+import { addPurchase } from './../../ducks/budgetReducer'
+import { removePurchase } from './../../ducks/budgetReducer'
 import Loading from './../shared/Loading/Loading';
 import Nav from './../shared/Nav';
 import './Budget.css';
@@ -29,8 +31,8 @@ class Budget extends Component {
           <Nav firstName={ firstName } lastName={ lastName } />
           <div className='content-container'>
             <div className="purchases-container">
-              <AddPurchase />
-              <DisplayPurchases purchases = { purchases } />              
+              <AddPurchase addPurchase = { this.props.addPurchase } />
+              <DisplayPurchases purchases = { purchases } removePurchase = { removePurchase } />              
             </div>
             <div className='chart-container'>
               <Chart1 purchases={ purchases } budgetLimit={ budgetLimit } />
@@ -51,4 +53,4 @@ function mapStateToProps (state) {
 }
 
 
-export default connect(mapStateToProps, { requestUserData, requestBudgetData})(Budget);
+export default connect(mapStateToProps, { requestUserData, requestBudgetData, addPurchase, removePurchase})(Budget);

@@ -20,7 +20,7 @@ export const requestUserData = () => {
 export default function userReducer(state = initialState, action) {
     switch(action.type) {
         case REQUEST_USER_DATA + '_FULFILLED':
-            const { email, firstName, lastName } = action.payload.userReducer
+            const { email, firstName, lastName } = action.payload.user
             return { email, firstName, lastName };
 
         //     return { ...state, isLoading: true}
